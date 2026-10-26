@@ -1,0 +1,138 @@
+{
+  "status": "inputs_only_no_llm_judgments_collected",
+  "seed": 20271025,
+  "generation_quality": {
+    "purpose": "Blind pairwise comparison of held-out DPO and PRP-R generations.",
+    "n_items": 4000,
+    "n_backbones": 8,
+    "n_per_backbone": 500,
+    "input": "llm_judge_evaluation/inputs/generation_quality_blind.jsonl",
+    "input_sha256": "4edce5a1b8dd68216a85a8aef69ba3cdb0ad7dcd348e7b6814cb291810e34a7d",
+    "sources": [
+      {
+        "backbone": "Open-LLaMA-3B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/DPO_raw_generations.jsonl",
+        "sha256": "4193ba7c125158617f3817c6d289e88044f7abaf288c65d022783627dc7af48a",
+        "comparison_note": "Historical held-out generation pair; DPO and PRP-R training used different PyTorch versions."
+      },
+      {
+        "backbone": "Open-LLaMA-3B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/open_llama_3b_v2_80k_k1_less_llama_32_3b_in_ba8_ga2_lora/open_llama_3b_v2_80k_k1_less_llama_32_3b_in_ba8_ga2_lora_generations.jsonl",
+        "sha256": "ffbb165b291193e8a188b9d55982bd891e4bcf4d9e5387f42e8cdf7950bae753",
+        "comparison_note": "Historical held-out generation pair; DPO and PRP-R training used different PyTorch versions."
+      },
+      {
+        "backbone": "Llama-3.2-1B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/llama_32_1b/DPO_raw_generations.jsonl",
+        "sha256": "08e730a7bb0bb6419ff5952087e570e73fd31355cbe12533300fe593804fdc8b",
+        "comparison_note": "Historical held-out generation pair with matching audited major training arguments."
+      },
+      {
+        "backbone": "Llama-3.2-1B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/llama_32_1b/DPO_defended_k1_llama_32_3b_in_generations.jsonl",
+        "sha256": "cdf2fdfc27285bcd1aaf78585c6654d0b5bc5db390c367672aecffb63c27a110",
+        "comparison_note": "Historical held-out generation pair with matching audited major training arguments."
+      },
+      {
+        "backbone": "Llama-3.2-3B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/llama_32_3b/llama_32_3b_80k_ba8_ga2_lora_generations.jsonl",
+        "sha256": "8820f396dbc245452b8ddc8ef1ef9efc821878ef5ea2609321ba9f87fee5821a",
+        "comparison_note": "Historical held-out generation pair with matching audited major training arguments."
+      },
+      {
+        "backbone": "Llama-3.2-3B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/llama_32_3b/llama_32_3b_80k_k1_less_llama_32_3b_in_ba8_ga2_lora_generations.jsonl",
+        "sha256": "81caddc6c45d3daec529ecf749ae0573acbc450d99315d9758eb3d363254a353",
+        "comparison_note": "Historical held-out generation pair with matching audited major training arguments."
+      },
+      {
+        "backbone": "Gemma-3-1B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/rest2/gemma3_1b_80k_ba8_ga2_lora_generations.jsonl",
+        "sha256": "83a6ac7b8e9afef914fa0cfd26682721c96020f3d83ef532c3e6bd0ec1dae5da",
+        "comparison_note": "Historical held-out generation pair; DPO and PRP-R training used different PyTorch versions."
+      },
+      {
+        "backbone": "Gemma-3-1B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/open_llama_7b/gemma3_1b_80k_k1_less_llama_32_3b_in_ba8_ga2_lora_generations.jsonl",
+        "sha256": "8ca53858b64a827dbc65c65aa14e2e55399e1c4abecc9cead3b8e921b08be809",
+        "comparison_note": "Historical held-out generation pair; DPO and PRP-R training used different PyTorch versions."
+      },
+      {
+        "backbone": "Qwen3.5-0.8B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/qwen35/qwen35_08b_base80k_ba8_ga2_lora_generations.jsonl",
+        "sha256": "d119ca208e00bad34c52f876c468b662442aa87bb93fa83e8c8c53d1aac120f5",
+        "comparison_note": "Historical held-out generation pair; its original DPO generation target differs from its reward-table target."
+      },
+      {
+        "backbone": "Qwen3.5-0.8B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/qwen35more/qwen35_08b_base_80k_k1_less_llama_32_3b_in_ba8_ga2_lora_generations.jsonl",
+        "sha256": "b077062d0bc0edbb31e0c422321278a526fc99bb5aae2a7054ae2ae09200961f",
+        "comparison_note": "Historical held-out generation pair; its original DPO generation target differs from its reward-table target."
+      },
+      {
+        "backbone": "Open-LLaMA-7B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/rest2/dpo_llama_7b_dpo_se80k_batch4_2_generations.jsonl",
+        "sha256": "15fc432bc9357b52e032394aaed07c60ba0275cdf783404ee37263095bd75683",
+        "comparison_note": "Descriptive only: archived DPO and PRP-R checkpoints have different optimizer-update counts."
+      },
+      {
+        "backbone": "Open-LLaMA-7B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/open_llama_7b/llama_7b_80k_k1_less_llama_32_3b_in_ba8_ga2_lora_generations.jsonl",
+        "sha256": "10e8d89848e559d5e4db077e4878532a93ff64e293011f1095496371c03217f4",
+        "comparison_note": "Descriptive only: archived DPO and PRP-R checkpoints have different optimizer-update counts."
+      },
+      {
+        "backbone": "Qwen3-1.7B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/more/qwen317b_base_80k_ba8_ga2_lora_generations.jsonl",
+        "sha256": "957a11bca1da6219b4151d9ce7dc1ad2db874ab397127c147abada0aa3f40eec",
+        "comparison_note": "Descriptive only: selected DPO and PRP-R tokenizer artifacts have different EOS IDs."
+      },
+      {
+        "backbone": "Qwen3-1.7B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/more/qwen317b_base_80k_k1_less_ba8_ga2_lora_generations.jsonl",
+        "sha256": "d84b67322b4ab897884b2fde9c87e88b3ac8093b606afe82b9dbbc0328abc3af",
+        "comparison_note": "Descriptive only: selected DPO and PRP-R tokenizer artifacts have different EOS IDs."
+      },
+      {
+        "backbone": "Gemma-2-2B",
+        "method": "DPO",
+        "path": "SE/premia/utility_eval_bc/rest2/dpo_gemma_2b_80k_batch8_8_lora_generations.jsonl",
+        "sha256": "1b7b0e50a309d49d418d5a53feaa7e0330423a2d4d626f07b239b25c0bf074ac",
+        "comparison_note": "Descriptive only: recovered DPO and PRP-R artifacts report two versus three training epochs."
+      },
+      {
+        "backbone": "Gemma-2-2B",
+        "method": "PRP-R",
+        "path": "SE/premia/utility_eval_bc/gemma/gemma2_2b_80k_k1_less_llama_32_3b_in_ba8_ga2_lora_generations.jsonl",
+        "sha256": "905703739e0ffb0813c6baa8cf241c715d0389d14d3d48e00146b5073c0ed834",
+        "comparison_note": "Descriptive only: recovered DPO and PRP-R artifacts report two versus three training epochs."
+      }
+    ]
+  },
+  "preference_label_validity": {
+    "purpose": "Compare chosen responses with original or sanitized rejected responses.",
+    "n_items": 240,
+    "n_source_tuples": 120,
+    "input": "llm_judge_evaluation/inputs/preference_label_validity_blind.jsonl",
+    "input_sha256": "849121593b53959287a2d83253b1c754b3bb2cfdc32993a8082c3f1753e21b3a",
+    "blind_sheet_path": "paper_revision_20261003/evidence/preference_label_audit_BLIND_annotation_sheet.csv",
+    "blind_sheet_sha256": "e94b24a7ac6af2aec5c992e98e55bcdff7d4cd8262826cd9101ee75dcb94043a",
+    "private_key_sha256": "87cffbf9ebfcc0d340666d4a85e1a0c49fac99adedb97844a8422a0686f81e38"
+  },
+  "blinding": "A/B mappings and condition labels are stored under ignored private/ and are not committed.",
+  "warning": "These are evaluation inputs, not observed LLM-as-judge results."
+}
