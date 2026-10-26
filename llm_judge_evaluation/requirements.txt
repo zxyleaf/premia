@@ -1,0 +1,4 @@
+langchain-core==0.3.86
+langchain-openai==0.3.35
+pydantic==2.12.4
+numpy==1.23.5

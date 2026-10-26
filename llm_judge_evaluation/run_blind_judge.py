@@ -121,6 +121,9 @@ def main():
     if args.limit is not None:
         rows = rows[: args.limit]
     output = Path(args.output_jsonl)
+    summary = Path(args.summary_json)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    summary.parent.mkdir(parents=True, exist_ok=True)
     existing = load_jsonl(output) if args.resume and output.exists() else []
     if output.exists() and not args.resume:
         raise FileExistsError("Output exists; use --resume or choose another output")
@@ -160,7 +163,7 @@ def main():
         "position_swap": True,
         "summary": summarize(records),
     }
-    Path(args.summary_json).write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    summary.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 
 

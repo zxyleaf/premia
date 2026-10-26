@@ -37,25 +37,71 @@ Public inputs contain only random A/B positions. Method labels, original/transfo
 
 The judge uses temperature 0 and evaluates every item twice with A/B positions swapped. Position-inconsistent cases are reported separately rather than silently forced into a winner.
 
-Set the Azure credentials in environment variables; never put an API key in this repository. Then run from the repository root:
+On the machine that can access the Azure endpoint, clone/update the repository
+and create a small evaluation environment:
 
 ```bash
-conda run -n premia python llm_judge_evaluation/run_blind_judge.py \
-  --input-jsonl llm_judge_evaluation/inputs/generation_quality_blind.jsonl \
-  --output-jsonl llm_judge_evaluation/results/generation_quality_raw.jsonl \
-  --summary-json llm_judge_evaluation/results/generation_quality_blind_summary.json \
-  --resume
+git clone https://github.com/zxyleaf/premia.git
+cd premia
+git pull origin main
 
-conda run -n premia python llm_judge_evaluation/run_blind_judge.py \
-  --input-jsonl llm_judge_evaluation/inputs/preference_label_validity_blind.jsonl \
-  --output-jsonl llm_judge_evaluation/results/preference_label_raw.jsonl \
-  --summary-json llm_judge_evaluation/results/preference_label_blind_summary.json \
-  --resume
+conda create -n premia-judge python=3.10 -y
+conda activate premia-judge
+python -m pip install -r llm_judge_evaluation/requirements.txt
+```
+
+Set the Azure credentials in environment variables; never put an API key in
+this repository, a shell script, or a committed `.env` file:
+
+```bash
+export AZURE_OPENAI_ENDPOINT='YOUR_AZURE_ENDPOINT'
+export AZURE_OPENAI_DEPLOYMENT='YOUR_DEPLOYMENT_NAME'
+export AZURE_OPENAI_API_VERSION='2024-03-01-preview'
+read -s AZURE_OPENAI_API_KEY
+export AZURE_OPENAI_API_KEY
+```
+
+First run a two-item smoke test into disposable output paths:
+
+```bash
+python llm_judge_evaluation/run_blind_judge.py \
+  --input-jsonl llm_judge_evaluation/inputs/generation_quality_blind.jsonl \
+  --output-jsonl /tmp/premia_judge_smoke.jsonl \
+  --summary-json /tmp/premia_judge_smoke_summary.json \
+  --limit 2
+```
+
+Then run the complete experiment. The launcher is resumable, so rerunning the
+same command after an API/network failure continues from completed item IDs:
+
+```bash
+bash llm_judge_evaluation/run_all.sh all
+```
+
+You can also run the two tasks separately:
+
+```bash
+bash llm_judge_evaluation/run_all.sh generation
+bash llm_judge_evaluation/run_all.sh preference
 ```
 
 The complete run requires 8,480 model calls: two positions for each of 4,000 generation items and 240 label-validity items. `--resume` safely skips completed item IDs.
 
-After the raw outputs are frozen, reveal and summarize locally:
+The blind summaries contain only A/B counts and therefore do not reveal which
+method won. Check completion with:
+
+```bash
+wc -l llm_judge_evaluation/results/generation_quality_raw.jsonl
+wc -l llm_judge_evaluation/results/preference_label_raw.jsonl
+python -m json.tool llm_judge_evaluation/results/generation_quality_blind_summary.json
+python -m json.tool llm_judge_evaluation/results/preference_label_blind_summary.json
+```
+
+A complete run has exactly 4,000 and 240 raw-result lines, respectively.
+
+After the raw outputs are frozen, copy the two raw JSONL files back to the
+original `/data1/zxy/Premia` checkout, where the ignored private keys remain.
+Do not commit either private key. Then reveal and summarize locally:
 
 ```bash
 conda run -n premia python llm_judge_evaluation/analyze_judgments.py \
@@ -72,6 +118,12 @@ conda run -n premia python llm_judge_evaluation/analyze_judgments.py \
 ```
 
 Report raw wins/ties/losses, invalid and position-inconsistent counts, tie-adjusted scores, and 95% prompt-bootstrap intervals. For label validity, report the population-weighted original and transformed chosen scores plus their paired stratified-bootstrap difference interval.
+
+The revealed generation summary is organized by backbone and reports PRP-R
+wins, DPO wins, ties, excluded position-inconsistent/invalid items, the
+tie-adjusted PRP-R score, and its 95% prompt-bootstrap interval. A score of 0.5
+means parity; intervals should be interpreted directly rather than converting
+a near-0.5 point estimate into a win claim.
 
 ## Scope and data notice
 
